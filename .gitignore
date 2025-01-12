@@ -1,0 +1,17 @@
+client/node_modules/
+backend/node_modules/
+node_modules/
+
+# Ignore logs
+*.log
+logs/
+client/logs/
+backend/logs/
+
+
+*.env
+client/.env
+backend/.env
+
+client/build/
+backend/dist/
