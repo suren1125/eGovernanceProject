@@ -4,7 +4,7 @@ An e-Governance project.
 
 ## Members
 
-Ranjit
-Salma
-Suren
-Surja
+Ranjit Shrestha
+Salma Prajapati
+Suren Shrestha
+Surja Shrestha
