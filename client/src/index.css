@@ -1,3 +1,17 @@
-@tailwind base;   
+@tailwind base;
 @tailwind components;
-@tailwind utilities; 
+@tailwind utilities;
+
+@layer components {
+  .register-container {
+    @apply flex flex-col justify-center items-center w-full;
+  }
+
+  .login-container {
+    @apply flex flex-col justify-center items-center w-full;
+  }
+
+  .nav-container {
+    @apply flex flex-col justify-start items-start w-full gap-10;
+  }
+}
