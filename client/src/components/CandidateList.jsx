@@ -1,8 +1,7 @@
-import { useState } from "react";
+import { CANDIDATE_DATA } from "./Data";
 
-function CandidateList(props) {
-  const [candidates] = useState(props.candidates);
-
+function CandidateList() {
+  const candidates = CANDIDATE_DATA;
   const candidateList = candidates.map((candidate) => (
     <tr key={candidate.id}>
       <td>{candidate.firstName}</td>

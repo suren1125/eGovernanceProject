@@ -1,4 +1,4 @@
-# Voting Poll System Implementation
+# e-Voting System Implementation
 
 An e-Governance project.
 
