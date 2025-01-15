@@ -10,7 +10,6 @@ function NavSideBar() {
         <Link to="/Dashboard">
           <li className="dashboard">Dashboard</li>
         </Link>
-        <li className="Votes">Votes</li>
       </section>
 
       <section className="manage">

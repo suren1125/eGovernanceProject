@@ -111,12 +111,6 @@ function Register() {
           id="pw-confirmation"
           className="input
           confirmation-label"
-          onChange={(e) => {
-            if (e.target.value !== password) {
-              alert("Enter the same password!");
-              return false;
-            }
-          }}
         ></input>
 
         <div>
@@ -130,6 +124,10 @@ function Register() {
           <label htmlFor="female" className="female">
             <input type="radio" name="gender" value="Female" />
             Female
+          </label>
+          <label htmlFor="other" className="other">
+            <input type="radio" name="gender" value="Other" />
+            Other
           </label>
         </div>
         <Link to="/Login">Already Registered? Login Here</Link>
