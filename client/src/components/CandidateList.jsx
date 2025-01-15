@@ -17,14 +17,17 @@ function CandidateList() {
   return (
     <>
       <div className="candidate-list">
+        <div className="page-title">Candidates</div>
         <table>
-          <tr>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Position</th>
-            <th>Tools</th>
-          </tr>
-          {candidateList}
+          <thead>
+            <tr>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Position</th>
+              <th>Tools</th>
+            </tr>
+          </thead>
+          <tbody>{candidateList}</tbody>
         </table>
       </div>
     </>

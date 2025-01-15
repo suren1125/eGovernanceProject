@@ -5,6 +5,8 @@ import Register from "./components/Register.jsx";
 import NavSideBar from "./components/NavSideBar.jsx";
 import Dashboard from "./components/Dashboard.jsx";
 import CandidateList from "./components/CandidateList.jsx";
+import VoterList from "./components/VoterList.jsx";
+import Position from "./components/Position.jsx";
 
 function App() {
   return (
@@ -15,6 +17,8 @@ function App() {
         <Route path="/Register" element={<Register />} />
         <Route path="/Dashboard" element={<Dashboard />} />
         <Route path="/CandidateList" element={<CandidateList />} />
+        <Route path="/VoterList" element={<VoterList />} />
+        <Route path="/Position" element={<Position />} />
       </Routes>
     </BrowserRouter>
   );

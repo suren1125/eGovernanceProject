@@ -8,24 +8,28 @@ function NavSideBar() {
       <section className="reports">
         <h1>REPORTS</h1>
         <Link to="/Dashboard">
-          <heading className="dashboard">Dashboard</heading>
+          <li className="dashboard">Dashboard</li>
         </Link>
-        <heading className="Votes">Votes</heading>
+        <li className="Votes">Votes</li>
       </section>
 
       <section className="manage">
         <h1>MANAGE</h1>
-        <heading className="voters">Voters</heading>
-        <heading className="positions">Positions</heading>
+        <Link to="./VoterList">
+          <li className="voters">Voters</li>
+        </Link>
+        <Link to="/Position">
+          <li className="positions">Positions</li>
+        </Link>
         <Link to="/CandidateList">
-          <heading className="candidates">Candidates</heading>
+          <li className="candidates">Candidates</li>
         </Link>
       </section>
 
       <section className="settings">
         <h1>SETTINGS</h1>
-        <heading className="ballot-position">Ballot Position</heading>
-        <heading className="election-title">Election Title</heading>
+        <li className="ballot-position">Ballot Position</li>
+        <li className="election-title">Election Title</li>
       </section>
     </div>
   );

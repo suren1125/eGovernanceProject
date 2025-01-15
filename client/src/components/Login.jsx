@@ -8,12 +8,12 @@ function Login() {
 
   const navigate = useNavigate();
 
-  function handleSubmit(e) {
+  const handleSubmit = (e) => {
     e.preventDefault();
     const userData = { email, voterid, password };
     console.log(userData);
     navigate("/");
-  }
+  };
 
   return (
     <>
