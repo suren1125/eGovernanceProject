@@ -12,7 +12,7 @@ function App() {
   const location = useLocation();
 
   // Paths where the sidebar should not be shown
-  const noSidebarPaths = ["/", "/Login", "/Register"];
+  const noSidebarPaths = ["/", "/login", "/register"];
 
   return (
     <>
@@ -20,12 +20,12 @@ function App() {
         {!noSidebarPaths.includes(location.pathname) && <NavSideBar />}
         <Routes>
           <Route path="/" element={<Login />} />
-          <Route path="/Login" element={<Login />} />
-          <Route path="/Register" element={<Register />} />
-          <Route path="/Dashboard" element={<Dashboard />} />
-          <Route path="/CandidateList" element={<CandidateList />} />
-          <Route path="/VoterList" element={<VoterList />} />
-          <Route path="/Position" element={<Position />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/candidateList" element={<CandidateList />} />
+          <Route path="/voterList" element={<VoterList />} />
+          <Route path="/position" element={<Position />} />
         </Routes>
       </div>
     </>
