@@ -17,57 +17,49 @@ function Login() {
 
   return (
     <>
-      <div className="voting-system">Voting System</div>
-      <form onSubmit={handleSubmit}>
-        <div className="login-container">
-          <h1 className="login">Login</h1>
-          {/* <label htmlFor="voter-name" className="name-label">
-          Voter Name:
-        </label>
-        <input
-          type="text"
-          id="voter-name"
-          className="input name-label"
-          name="name"
-        ></input> */}
 
-          <label htmlFor="voter-id" className="id-label">
-            Voter ID:
-          </label>
-          <input
-            type="text"
-            id="voter-id"
-            className="input id-label"
-            required
-            onChange={(e) => setVoterid(e.target.value)}
-          ></input>
+<div className="flex justify-center	p-5 m-5">
 
-          <label htmlFor="voter-email" className="email-label">
-            Email:
-          </label>
-          <input
-            type="email"
-            id="voter-email"
-            className="input email-label"
-            onChange={(e) => setEmail(e.target.value)}
-          ></input>
+  <div className="flex flex-col items-center m-5 p-10">
+        <h1 className="mb-10 text-3xl font-sans font-bold text-[#3e0598]">E-voting System</h1>
 
-          <label htmlFor="voter-pw" className="pw-label">
-            Password:
-          </label>
-          <input
-            type="password"
-            id="voter-pw"
-            className="input pw-label"
-            onChange={(e) => setPassword(e.target.value)}
-          ></input>
-
-          <button type="submit" className="btn login-btn">
+<div className="">
+  <div className="relative">
+  <form onSubmit={handleSubmit}>
+  
+<label htmlFor="voter-email"></label>
+  <input type="number"
+   name="id" 
+   id="voter-id" 
+    value={voterid}
+     onChange={(e) => setVoterid(e.target.value)} 
+     className="border border-gray-400 rounded-lg p-2 mb-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-[19px]" 
+     placeholder="VoterId Number"></input>
+  
+  
+  <input type="password" 
+  name="password"
+   id="voter-password"
+   value={password}
+    onChange={(e) => setPassword(e.target.value)}
+    className="border border-gray-400 rounded-md p-2 mb-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-[19px]" 
+    placeholder="Password"></input>
+  
+  
+  <div className="flex flex-col items-center gap-2">
+  <button type="submit" className="bg-[#3e0598] self-center text-white p-2 m-2 text-[20px] rounded-full w-[200px]">
             Login
           </button>
-          <Link to="/Register">Register</Link>
-        </div>
-      </form>
+          <Link to="/Register" className="text-gray-400">Don't have an account? Register Here!</Link> 
+  </div>
+
+  </form>
+  </div>
+
+</div>
+</div>
+</div>
+     
     </>
   );
 }

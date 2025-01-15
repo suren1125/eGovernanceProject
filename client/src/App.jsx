@@ -11,7 +11,7 @@ import Position from "./components/Position.jsx";
 function App() {
   return (
     <BrowserRouter>
-      <NavSideBar />
+      {/* <NavSideBar /> */}
       <Routes>
         <Route path="/Login" element={<Login />} />
         <Route path="/Register" element={<Register />} />
