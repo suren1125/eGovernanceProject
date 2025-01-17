@@ -20,7 +20,6 @@ class User(AbstractUser):
   voted = models.BooleanField(default=False)
   voter_id = models.CharField(max_length = 10)
 
-
   def save(self, *args, **kwargs):
     if not self.voter_id:
       self.voter_id = self.generate_voter_id()

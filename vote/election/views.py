@@ -21,9 +21,10 @@ class RegisterView(generics.CreateAPIView):
   queryset = User.objects.all()
   permission_classes = [AllowAny]
   serializer_class = RegisterSerializer
+  
   def perform_create(self, serializer):
-     user = serializer.save()
-     send_email_to_client(user.email, user.voter_id)
+      user = serializer.save()
+      send_email_to_client(user.email, user.voter_id)
 
 
 

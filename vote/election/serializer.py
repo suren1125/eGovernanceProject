@@ -10,6 +10,8 @@ class UserSerializer(serializers.ModelSerializer):
     model = User
     fields = ['citizenship_number', 'first_name','last_name','gender','voted','voter_id']
 
+  
+
 class VoterSerializer(serializers.ModelSerializer):
   
   class Meta:
@@ -40,9 +42,18 @@ class RegisterSerializer(serializers.ModelSerializer):
   def validate(self, attrs):
     if attrs['password'] != attrs['password2']:
       raise serializers.ValidationError({
-        "password": "Password fields does not match"
+        "password": "Password fields does not match"})
+
+    if len(str(attrs['phone']))!=10 :
+        raise serializers.ValidationError({"password": "Password fields does not match"
+      
       })
     return attrs
+  
+  def validate_citizenship_number(self, value):
+    if len(value)!=10:
+      raise serializers.ValidationError('Citizenship Number must be of 10 characters')
+    return value
   
   def create(self, validated_data):
     user = User.objects.create_user(
