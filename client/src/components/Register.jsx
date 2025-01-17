@@ -195,7 +195,7 @@ function Register() {
       <img
         className="absolute top-0 z-[-1] w-1/2 right-0"
         src={voting}
-        alt=""
+        alt="Electronic Voting"
       />
     </section>
   );

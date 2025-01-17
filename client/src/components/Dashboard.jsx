@@ -27,10 +27,6 @@ function Dashboard() {
             <p>Total Voters</p>
           </div>
         </div>
-
-        <div className="votes-tally">
-          <p>Voting Tally</p>
-        </div>
       </div>
     </div>
   );
