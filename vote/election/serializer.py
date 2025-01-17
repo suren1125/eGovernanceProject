@@ -8,28 +8,34 @@ class UserSerializer(serializers.ModelSerializer):
   
   class Meta:
     model = User
-    fields = ['id', 'username','voter_id']
+    fields = ['citizenship_number', 'first_name','last_name','gender','voted','voter_id']
 
-
+class VoterSerializer(serializers.ModelSerializer):
+  
+  class Meta:
+    model = Voter
+    fields = '__all__'
+    
+  
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
   @classmethod
   def get_token(cls, user):
     token = super().get_token(user)
-
-    token['full_name'] = user.profile.full_name
-    token['username'] = user.username
-    token['voter_id'] = user.full_name
-    token['voted'] = user.profile.voted
-
+    token['full_name'] = user.first_name
+    token['full_name'] = user.last_name
+    token['citizenship_number'] = user.citizenship_number
+    token['voted'] = user.voted
     return token
-  
+
+
+#Register 
 class RegisterSerializer(serializers.ModelSerializer):
   password = serializers.CharField(write_only = True, required = True, validators = [validate_password])
   password2 = serializers.CharField(write_only = True, required = True,)
-
+  citizenship_number = serializers.CharField(required = True)
   class Meta:
     model = User
-    fields = ['voter_id', 'username', 'password', 'password2']
+    fields = ['username','citizenship_number', 'first_name','last_name','email','address','phone','gender', 'password','password2']
 
   def validate(self, attrs):
     if attrs['password'] != attrs['password2']:
@@ -39,37 +45,61 @@ class RegisterSerializer(serializers.ModelSerializer):
     return attrs
   
   def create(self, validated_data):
-    user = User.objects.create(
+    user = User.objects.create_user(
       username = validated_data['username'],
-      voter_id = validated_data['voter_id'],
+      first_name = validated_data['first_name'],
+      last_name = validated_data['last_name'],
+      email = validated_data['email'],
+      phone = validated_data['phone'],
+      gender = validated_data['gender'],
+      address = validated_data['address'],
+      citizenship_number=validated_data['citizenship_number'], 
+  
     )
+    
     user.set_password (validated_data['password'])
     user.save()
 
     return user
   
 
+
+#Login
 class LoginSerializer(serializers.Serializer):
-  username = serializers.CharField(required = True)
+  voter_id = serializers.CharField(required = True)
   password = serializers.CharField(required = True)
-  voter_id = serializers.IntegerField(required = True)
+
 
   def validate(self, data):
-    user = authenticate(username = data['username'] ,  password = data['password'], voter_id = data['voter_id'])
+    voter_id = data.get('voter_id')
+    password = data.get('password')
+
+    try:
+      voter = User.objects.get(voter_id=voter_id)
+    except User.DoesNotExist:
+      raise serializers.ValidationError("Invalid voter ID or password.")
+
+    user = authenticate(username=voter.user.username, password=password)
     if user is None:
-      raise serializers.ValidationError("Invalid username")
-    data['user'] = user 
+      raise serializers.ValidationError("Invalid voter ID or password.")
+    data['user'] = user
     return data
-  
 
 
-class Candidates_for_mayor_serializer(serializers.ModelSerializer):
+
+#Mayor Candidates
+class CandidatesForMayorSerializer(serializers.ModelSerializer):
     class Meta:
-      model = Candidates_for_Mayor
+      model = CandidatesForMayor
       fields = '__all__'
+    def __str__(self):
+      return self.full_name 
 
-class Candidates_for_deputymayor_serializer(serializers.ModelSerializer):
+    
+#DeputyMayor Candidates
+class CandidatesForDeputymayorSerializer(serializers.ModelSerializer):
     class Meta:
-      model = Candidates_for_deputymayor
+      model = CandidatesForDeputymayor
       fields = '__all__'
-
+    def __str__(self):
+      return self.full_name
