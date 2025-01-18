@@ -45,10 +45,10 @@ const VOTER_DATA = [
 const POSITION_DATA = [
   {
     id: "p-0",
-    positionName: "President",
+    description: "President",
     maxVote: 1,
   },
-  { id: "p-1", positionName: "Vice President", maxVote: 1 },
+  { id: "p-1", description: "Vice President", maxVote: 1 },
 ];
 
 export { CANDIDATE_DATA };
