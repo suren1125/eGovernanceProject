@@ -35,7 +35,10 @@ def login(request):
 
   if serializer.is_valid():
      user = serializer.validated_data['user']
-     return Response({"message": f"Welcome, {user.username}"}, status = status.HTTP_200_OK)
+     return Response({
+        "message": f"Welcome, {user.username}",
+        "token": user.voter_id  # Send voter_id as the token
+    }, status=status.HTTP_200_OK)
   else:
      return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
 

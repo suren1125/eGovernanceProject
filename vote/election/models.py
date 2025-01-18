@@ -18,7 +18,7 @@ class User(AbstractUser):
   phone = models.CharField(max_length = 10)
   gender = models.CharField(max_length=6, choices = GENDER)
   voted = models.BooleanField(default=False)
-  voter_id = models.CharField(max_length = 10)
+  voter_id = models.CharField(max_length = 10 ,unique=True)
 
   def save(self, *args, **kwargs):
     if not self.voter_id:
@@ -29,7 +29,7 @@ class User(AbstractUser):
     return str(uuid.uuid4().int)[:10]
 
   #  USERNAME_FIELD = 'username'
-  USERNAME_FIELD = 'citizenship_number'
+  USERNAME_FIELD = 'voter_id'
   REQUIRED_FIELDS = ['username','first_name', 'last_name','phone','gender','email']
   @classmethod
   def total_voters(cls):

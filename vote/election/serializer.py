@@ -45,7 +45,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         "password": "Password fields does not match"})
 
     if len(str(attrs['phone']))!=10 :
-        raise serializers.ValidationError({"password": "Password fields does not match"
+        raise serializers.ValidationError({"phone": "Phone number should be 10 characters long"
       
       })
     return attrs
@@ -76,25 +76,31 @@ class RegisterSerializer(serializers.ModelSerializer):
 
 
 #Login
+
+
 class LoginSerializer(serializers.Serializer):
-  voter_id = serializers.CharField(required = True)
-  password = serializers.CharField(required = True)
+    voter_id = serializers.CharField(required=True)
+    password = serializers.CharField(required=True)
+    voter = None
+    def validate(self, data):
+        voter_id = data.get('voter_id')
+        password = data.get('password')
+        voter = None
+        try:
+          voter = User.objects.get(voter_id=voter_id)
+          print(voter)  # Print the user object
+        except User.DoesNotExist:
+          raise serializers.ValidationError("Invalid voter ID or password.")
+        # Authenticate user with voter_id and password
+        user = authenticate(voter_id=voter_id, password=password)  # Assuming you authenticate using username
+        print("Authenticated user:", user)  # Print the result of the authentication
 
+        if user is None:
+          raise serializers.ValidationError("Invalid voter ID or password.")
 
-  def validate(self, data):
-    voter_id = data.get('voter_id')
-    password = data.get('password')
+        data['user'] = user
+        return data
 
-    try:
-      voter = User.objects.get(voter_id=voter_id)
-    except User.DoesNotExist:
-      raise serializers.ValidationError("Invalid voter ID or password.")
-
-    user = authenticate(username=voter.user.username, password=password)
-    if user is None:
-      raise serializers.ValidationError("Invalid voter ID or password.")
-    data['user'] = user
-    return data
 
 
 

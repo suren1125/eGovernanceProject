@@ -2,16 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
+img{
+  object-fit: contain;
+  width:100%;
+  height:100%;
+}
+
 @layer components {
-  .register-container {
-    @apply flex flex-col justify-center items-center w-full;
-  }
+.margin{
+  @apply mx-[3rem] my-[2rem]
+}
 
-  .login-container {
-    @apply flex flex-col justify-center items-center w-full;
-  }
+.register  input{
+  @apply  ring-black px-2 py-1 rounded
+}
+.register label{
+  @apply font-semibold mb-1
+}
 
-  .nav-container {
-    @apply flex flex-col justify-start items-start w-full gap-10;
-  }
 }

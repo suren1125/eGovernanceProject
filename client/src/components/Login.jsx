@@ -3,16 +3,38 @@ import { Link, useNavigate } from "react-router";
 
 function Login() {
   const [email, setEmail] = useState("");
-  const [voterid, setVoterid] = useState("");
+  const [voter_id, setVoterid] = useState("");
   const [password, setPassword] = useState("");
 
   const navigate = useNavigate();
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-    const userData = { email, voterid, password };
+    const userData = {
+      voter_id, 
+      password 
+    };
     console.log(userData);
-    navigate("/");
+    try{
+      const response = await fetch('http://127.0.0.1:8000/login/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+      });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      console.log(data);
+      return
+    }
+    console.log("successful");
+    console.log(data)
+  }catch(error){
+    console.log(error);
+  }
   }
 
   return (
@@ -27,23 +49,21 @@ function Login() {
   <div className="relative">
   <form onSubmit={handleSubmit}>
   
-<label htmlFor="voter-email"></label>
   <input type="number"
    name="id" 
    id="voter-id" 
-    value={voterid}
      onChange={(e) => setVoterid(e.target.value)} 
      className="border border-gray-400 rounded-lg p-2 mb-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-[19px]" 
-     placeholder="VoterId Number"></input>
+     placeholder="VoterId Number" />
   
   
   <input type="password" 
   name="password"
    id="voter-password"
-   value={password}
+
     onChange={(e) => setPassword(e.target.value)}
     className="border border-gray-400 rounded-md p-2 mb-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-[19px]" 
-    placeholder="Password"></input>
+    placeholder="Password" />
   
   
   <div className="flex flex-col items-center gap-2">
