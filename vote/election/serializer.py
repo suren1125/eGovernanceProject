@@ -26,7 +26,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     token['full_name'] = user.first_name
     token['full_name'] = user.last_name
     token['citizenship_number'] = user.citizenship_number
-    token['voted'] = user.voted
+    token['voter_id'] = user.voted
     return token
 
 
@@ -79,18 +79,19 @@ class RegisterSerializer(serializers.ModelSerializer):
 class LoginSerializer(serializers.Serializer):
   voter_id = serializers.CharField(required = True)
   password = serializers.CharField(required = True)
-
+ 
 
   def validate(self, data):
     voter_id = data.get('voter_id')
     password = data.get('password')
+ 
 
-    try:
-      voter = User.objects.get(voter_id=voter_id)
-    except User.DoesNotExist:
-      raise serializers.ValidationError("Invalid voter ID or password.")
+    # try:
+    #   voter = User.objects.get(voter_id=voter_id)
+    # except User.DoesNotExist:
+    #   raise serializers.ValidationError("Invalid voter ID or password.")
 
-    user = authenticate(username=voter.user.username, password=password)
+    user = authenticate(username = voter_id, password = password)
     if user is None:
       raise serializers.ValidationError("Invalid voter ID or password.")
     data['user'] = user

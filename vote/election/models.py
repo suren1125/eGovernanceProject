@@ -6,8 +6,9 @@ import uuid
 
 # Create your models here.
 class User(AbstractUser):
+  id = models.AutoField(primary_key = True)
   username = models.CharField(max_length=40)
-  citizenship_number = models.CharField(max_length=14, primary_key=True)
+  citizenship_number = models.CharField(max_length=10)
   GENDER = [('Male','Male'),
             ('Female','Female'),            
             ('Other','Other'),]
@@ -18,7 +19,7 @@ class User(AbstractUser):
   phone = models.CharField(max_length = 10)
   gender = models.CharField(max_length=6, choices = GENDER)
   voted = models.BooleanField(default=False)
-  voter_id = models.CharField(max_length = 10)
+  voter_id = models.CharField(max_length = 10, unique = True)
 
   def save(self, *args, **kwargs):
     if not self.voter_id:
@@ -29,8 +30,8 @@ class User(AbstractUser):
     return str(uuid.uuid4().int)[:10]
 
   #  USERNAME_FIELD = 'username'
-  USERNAME_FIELD = 'citizenship_number'
-  REQUIRED_FIELDS = ['username','first_name', 'last_name','phone','gender','email']
+  USERNAME_FIELD = 'voter_id'
+  REQUIRED_FIELDS = ['username','citizenship_number','first_name', 'last_name','phone','gender','email']
   @classmethod
   def total_voters(cls):
     return cls.objects.count()

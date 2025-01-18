@@ -12,6 +12,7 @@ from django.http import HttpResponse
 from .utils import send_email_to_client
 from django.db import transaction
 from django.shortcuts import get_object_or_404
+from rest_framework_simplejwt.tokens import RefreshToken
    
 
 class MyTokenObtainPairView(TokenObtainPairView):
@@ -35,7 +36,21 @@ def login(request):
 
   if serializer.is_valid():
      user = serializer.validated_data['user']
-     return Response({"message": f"Welcome, {user.username}"}, status = status.HTTP_200_OK)
+     refresh = RefreshToken.for_user(user)
+     access_token = refresh.access_token
+     access_token['full_name'] = f"{user.first_name} {user.last_name}" 
+     access_token['citizenship_number'] = user.citizenship_number
+     access_token['voted'] = user.voted
+     return Response({
+            'refresh': str(refresh),
+            'access': str(access_token),
+            'user': {
+                'full_name': f"{user.first_name} {user.last_name}",
+                'citizenship_number': user.citizenship_number,
+                'voter_id': user.voter_id,
+                'voted': user.voted
+            }
+        }, status=status.HTTP_200_OK)
   else:
      return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
 
