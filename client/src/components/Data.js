@@ -7,12 +7,18 @@ const CANDIDATE_DATA = [
   },
   {
     id: "c-1",
+    firstName: "Salmon",
+    lastName: "Kurosaki",
+    position: "President",
+  },
+  {
+    id: "c-2",
     firstName: "Salman",
     lastName: "Prajapati",
     position: "Vice President",
   },
   {
-    id: "c-2",
+    id: "c-3",
     firstName: "Surja",
     lastName: "Shrestha",
     position: "Vice President",

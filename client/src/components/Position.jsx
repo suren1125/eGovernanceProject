@@ -7,6 +7,21 @@ function Position() {
   const [positions, setPositions] = useState(POSITION_DATA);
   const [positionToEdit, setPositionToEdit] = useState(null);
 
+  const fields = [
+    { name: "description", label: "Description", type: "text" },
+    { name: "maxVote", label: "Maximum Vote", type: "number" },
+  ];
+
+  const validatePositionForm = (formState) => {
+    const errors = [];
+    for (const field of fields) {
+      if (!formState[field.name]) {
+        errors.push(`${field.label}`);
+      }
+    }
+    return errors.length > 0 ? errors : null;
+  };
+
   const handleDeletePosition = (targetIndex) => {
     setPositions(positions.filter((_, idx) => idx !== targetIndex));
   };
@@ -57,7 +72,17 @@ function Position() {
               <th>Tools</th>
             </tr>
           </thead>
-          <tbody>{positionList}</tbody>
+          <tbody>
+            {positions.length > 0 ? (
+              positionList
+            ) : (
+              <tr>
+                <td colSpan="3" style={{ textAlign: "center" }}>
+                  There are no positions to display.
+                </td>
+              </tr>
+            )}
+          </tbody>
         </table>
         <button onClick={() => setModalOpen(true)}>Add</button>
         {modalOpen && (
@@ -66,7 +91,9 @@ function Position() {
               setModalOpen(false);
               setPositionToEdit(null);
             }}
+            fields={fields}
             onSubmit={handleSubmit}
+            validateFormCustom={validatePositionForm}
             defaultValue={positionToEdit !== null && positions[positionToEdit]}
           />
         )}

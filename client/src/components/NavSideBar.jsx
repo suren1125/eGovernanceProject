@@ -7,20 +7,20 @@ function NavSideBar() {
       <div className="voter-account">Voter Account</div>
       <section className="reports">
         <h1>REPORTS</h1>
-        <Link to="/Dashboard">
+        <Link to="/dashboard">
           <li className="dashboard">Dashboard</li>
         </Link>
       </section>
 
       <section className="manage">
         <h1>MANAGE</h1>
-        <Link to="./VoterList">
+        <Link to="/voterlist">
           <li className="voters">Voters</li>
         </Link>
-        <Link to="/Position">
+        <Link to="/position">
           <li className="positions">Positions</li>
         </Link>
-        <Link to="/CandidateList">
+        <Link to="/candidatelist">
           <li className="candidates">Candidates</li>
         </Link>
       </section>
