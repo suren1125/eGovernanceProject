@@ -3,8 +3,8 @@ import { Link } from "react-router";
 function NavSideBar() {
   return (
     <div className="nav-container">
-      <h1 className="title">Voting System</h1>
-      <div className="voter-account">Voter Account</div>
+      <h1 className="title">e-Voting System</h1>
+      {/* <div className="voter-account">Voter Account</div> */}
       <section className="reports">
         <h1>REPORTS</h1>
         <Link to="/dashboard">
@@ -27,7 +27,9 @@ function NavSideBar() {
 
       <section className="settings">
         <h1>SETTINGS</h1>
-        <li className="ballot-position">Ballot Position</li>
+        <Link to="/ballotPosition">
+          <li className="ballot-position">Ballot Position</li>
+        </Link>
         <li className="election-title">Election Title</li>
       </section>
     </div>
