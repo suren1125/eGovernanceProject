@@ -10,15 +10,7 @@ class UserSerializer(serializers.ModelSerializer):
     model = User
     fields = ['citizenship_number', 'first_name','last_name','gender','voted','voter_id']
 
-  
 
-class VoterSerializer(serializers.ModelSerializer):
-  
-  class Meta:
-    model = Voter
-    fields = '__all__'
-    
-  
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
   @classmethod
   def get_token(cls, user):
@@ -111,3 +103,8 @@ class CandidatesForDeputymayorSerializer(serializers.ModelSerializer):
       fields = '__all__'
     def __str__(self):
       return self.full_name
+
+class VoteSerializer(serializers.Serializer):
+    candidate_type = serializers.ChoiceField(choices=['mayor', 'deputy_mayor'])
+    id = serializers.IntegerField()
+

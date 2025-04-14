@@ -85,27 +85,8 @@ class CandidatesForDeputymayor(models.Model):
 
 
 
-
-class Voter(models.Model):
-  user = models.OneToOneField(User,on_delete = models.CASCADE)
-  citizenship_number = models.CharField(max_length=14, primary_key=True)
-  GENDER = [('Male','Male'),
-            ('Female','Female'),            ('Other','Other'),]
-  first_name = models.CharField(max_length = 20)
-  last_name = models.CharField(max_length = 20)  
-  address = models.CharField(max_length=30)
-  email = models.EmailField()
-  phone = models.CharField(max_length = 10)
-  gender = models.CharField(max_length=6, choices = GENDER)
-  voted = models.BooleanField(default=False)
-  voter_id = models.CharField(max_length = 10)
-
-  def __str__(self):
-    return self.citizenship_number
-
-
 class Vote(models.Model):
-  voter = models.OneToOneField(Voter, on_delete = models.CASCADE, related_name ='vote')
+  voter = models.OneToOneField(User, on_delete = models.CASCADE, related_name ='vote')
   mayor_candidate = models.ForeignKey(CandidatesForMayor, on_delete=models.SET_NULL, null = True, blank = True, related_name = 'votes_for_mayor')
   deputy_mayor_candidate = models.ForeignKey(CandidatesForDeputymayor, on_delete= models.SET_NULL, null = True,blank = True, related_name='votes_for_deputy_mayor')
 
