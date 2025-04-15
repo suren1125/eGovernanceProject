@@ -180,7 +180,7 @@ EMAIL_HOST = "smtp.gmail.com"
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = "stha.surja123@gmail.com"
-EMAIL_HOST_PASSWORD = "hnqf uijm jzuk szxo"
+EMAIL_HOST_PASSWORD = "rpjj jlev qgtc omgw"
  
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
