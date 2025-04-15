@@ -92,3 +92,17 @@ class Vote(models.Model):
 
   def __str__(self):
     return f"Vote by {self.voter.citizenship_number}"
+  
+
+class TopMayorCandidate(CandidatesForMayor):
+  class Meta:
+    proxy = True
+    verbose_name = 'Top Voted Mayor'
+    verbose_name_plural = 'Top Voted Mayor'
+
+class TopDeputyMayorCandidate(CandidatesForDeputymayor):
+  class Meta:
+    proxy = True
+    verbose_name = 'Top Voted Deputy Mayor'
+    verbose_name_plural = 'Top Voted Deputy Mayor'
+    
