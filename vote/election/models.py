@@ -35,13 +35,6 @@ class User(AbstractUser):
   USERNAME_FIELD = 'voter_id'
   REQUIRED_FIELDS = ['username','citizenship_number','first_name', 'last_name','phone','gender','email']
 
-  @classmethod
-  def total_voters(cls):
-    return cls.objects.count()
-
-  @classmethod
-  def total_voted(cls):
-    return cls.objects.filter(voted=True).count()
 
   def __str__(self):
     return self.citizenship_number
@@ -107,10 +100,21 @@ class Vote(models.Model):
 class VotingWindow(models.Model):
   start_datetime = models.DateTimeField()
   end_datetime = models.DateTimeField()
+  is_active = models.BooleanField(default = False)
+  
+  def save(self, *args, **kwargs):
+    if self.is_active:
+      VotingWindow.objects.filter(is_active = True).update(is_active = False)
+    super().save(*args, **kwargs)
+
 
   def is_voting_open(self):
-    now = timezone.now()
-    return self.start_datetime <= now <=self.end_datetime
+    try:
+      voting_window = VotingWindow.objects.get(is_active=True)
+      now = timezone.now()
+      return voting_window.start_datetime <= now <= voting_window.end_datetime
+    except VotingWindow.DoesNotExist:
+        return False  
   
   def __str__(self):
     return f"Voting from {self.start_datetime} to {self.end_datetime}"
@@ -133,4 +137,10 @@ class TopGeneralMemberCandidate(CandidatesForGeneralMembers):
     proxy = True
     verbose_name = 'Top Voted General Members'
     verbose_name_plural = 'Top Voted General Members'
+  
+class TotalVoters(User):
+  class Meta:
+    proxy = True
+    verbose_name = 'Voters'
+    verbose_name_plural = 'Voters'
     

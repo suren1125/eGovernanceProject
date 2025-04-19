@@ -108,6 +108,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
@@ -133,6 +134,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
+     
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     )
 }
@@ -186,3 +188,4 @@ EMAIL_HOST_PASSWORD = "rpjj jlev qgtc omgw"
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+

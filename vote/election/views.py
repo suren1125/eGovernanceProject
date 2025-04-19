@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from .models import *
+from django.contrib.auth import authenticate,  logout
 # Create your views here.
+from django.contrib.auth import login as django_login
 from .serializer import *
 from rest_framework.decorators import api_view,permission_classes
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -13,7 +15,9 @@ from .utils import send_email_to_client
 from django.db import transaction
 from django.shortcuts import get_object_or_404
 from rest_framework_simplejwt.tokens import RefreshToken
-   
+from django.views.decorators.csrf import ensure_csrf_cookie
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse 
 
 class MyTokenObtainPairView(TokenObtainPairView):
   serializer_class = MyTokenObtainPairSerializer
@@ -29,11 +33,11 @@ class RegisterView(generics.CreateAPIView):
 
 
 
+
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def login(request):
   serializer = LoginSerializer(data = request.data, context = {'request': request})
-
   if serializer.is_valid():
      user = serializer.validated_data['user']
      refresh = RefreshToken.for_user(user)
@@ -53,6 +57,8 @@ def login(request):
         }, status=status.HTTP_200_OK)
   else:
      return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
+      
+
 
 
 
@@ -90,7 +96,7 @@ def get_candidates_deputymayor(request):
 @permission_classes([AllowAny])
 def get_candidates_generalmembers(request):
     candidates = CandidatesForGeneralMembers.objects.all()
-    serializer = CandidatesForDeputymayorSerializer(candidates, many = True)
+    serializer = CandidatesForGeneralMembersSerializer(candidates, many = True)
     # json_data = JSONRenderer().render(serializer.data)
     return Response(serializer.data)
 
@@ -155,7 +161,7 @@ def vote_for_candidate(request):
                 try:
                     general_candidate = CandidatesForGeneralMembers.objects.get(id=candidate_id)
                 except CandidatesForGeneralMembers.DoesNotExist:
-                    return Response({"error": "Deputy mayor candidate not found."}, status=404)
+                    return Response({"error": "General Member candidate not found."}, status=404)
 
                 vote.general_member_candidate = general_candidate
                 general_candidate.votes_received += 1

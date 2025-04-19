@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.db.models import Max
+from django.contrib import messages
 from .models import *
 # Register your models here.
 
@@ -18,7 +19,7 @@ class MayorAdmin(admin.ModelAdmin):
  
 class DepMayorAdmin(admin.ModelAdmin):
   list_display = ['id','full_name','votes_received','party_associated','election_promise','image']
-  readonly_fields = ['full_name','votes_received','party_associated','election_promise','image']
+  readonly_fields = ['votes_received']
   search_fields = ('full_name',)
 
 
@@ -93,6 +94,28 @@ class TopDeputyMayorCandidateAdmin(admin.ModelAdmin):
 @admin.register(VotingWindow)
 class VotingWindowAdmin(admin.ModelAdmin):
   list_display  = ('start_datetime','end_datetime')
+
+
+@admin.register(TotalVoters)
+class VotersAdmin(admin.ModelAdmin):
+  list_display = ['citizenship_number','first_name','last_name','voted']
+  readonly_fields = ['citizenship_number','first_name','last_name','voted']
+
+  def get_queryset(self, request):
+    qs = super().get_queryset(request).filter(voted = True)
+    return qs
+
+  def changelist_view(self, request, extra_context = None): 
+    total_voted = User.objects.filter(voted = True).count()
+    extra_context = extra_context or {}
+    extra_context['voters_count'] = total_voted
+    return super().changelist_view(request, extra_context=extra_context)
+
+
+    # self.message_user(
+    #   request, f"Total Registered Voters: {total_voters} |Total Completed Voters: {total_voted}",level = messages.INFO
+    # )
+
 
 admin.site.register(User, UserAdmin)
 #admin.site.register(Voter, VotersAdmin)
