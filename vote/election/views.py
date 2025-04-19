@@ -66,7 +66,7 @@ def dashboard(request):
     text = request.POST.get("text")
     response = f"Hey {request.user}, your text is {text}"
     return Response({'response': response}, status = status.HTTP_200_OK,)
-  return response({}, status = status.HTTP_400_BAD_REQUEST)
+  return Response({}, status = status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET'])
@@ -86,10 +86,29 @@ def get_candidates_deputymayor(request):
     return Response(serializer.data)
 
 
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def get_candidates_generalmembers(request):
+    candidates = CandidatesForGeneralMembers.objects.all()
+    serializer = CandidatesForDeputymayorSerializer(candidates, many = True)
+    # json_data = JSONRenderer().render(serializer.data)
+    return Response(serializer.data)
+
+
 #vote
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def vote_for_candidate(request):
+    try:
+        voting_window = VotingWindow.objects.first()
+        if not voting_window:
+            return Response({"error": "Voting window is not configured"})
+        if not voting_window.is_voting_open():
+            return Response({"error": "Voting is currently closed"})
+        
+    except Exception as e: 
+        return Response({"error": str(e)})
+    
     serializer = VoteSerializer(data=request.data)
     if not serializer.is_valid():
         return Response(serializer.errors, status=400)
@@ -128,14 +147,28 @@ def vote_for_candidate(request):
                 vote.deputy_mayor_candidate = deputy_candidate
                 deputy_candidate.votes_received += 1
                 deputy_candidate.save()
+
+
+            elif candidate_type == "general_member":
+                if vote.general_member_candidate:
+                    return Response({"error": "You have already voted for a general member."}, status=400)
+                try:
+                    general_candidate = CandidatesForGeneralMembers.objects.get(id=candidate_id)
+                except CandidatesForGeneralMembers.DoesNotExist:
+                    return Response({"error": "Deputy mayor candidate not found."}, status=404)
+
+                vote.general_member_candidate = general_candidate
+                general_candidate.votes_received += 1
+                general_candidate.save()
+            
             else:
                 return Response({"error": "Invalid candidate type."}, status=400)
 
             # Save vote only after assigning candidate
             vote.save()
 
-            # If both are voted, mark voter as voted
-            if vote.mayor_candidate and vote.deputy_mayor_candidate:
+            # If all are voted, mark voter as voted
+            if vote.mayor_candidate and vote.deputy_mayor_candidate and vote.general_member_candidate:
                 voter.voted = True
                 voter.save()
                 return Response({"message": "Your vote has been successfully submitted!"}, status=200)
@@ -143,7 +176,8 @@ def vote_for_candidate(request):
             return Response({
                 "message": f"Vote for {candidate_type.replace('_', ' ')} submitted successfully.",
                 "mayor_voted_for": vote.mayor_candidate.full_name if vote.mayor_candidate else None,
-                "deputy_mayor_voted_for": vote.deputy_mayor_candidate.full_name if vote.deputy_mayor_candidate else None
+                "deputy_mayor_voted_for": vote.deputy_mayor_candidate.full_name if vote.deputy_mayor_candidate else None,
+                "general_member_voted_for": vote.general_member_candidate.full_name if vote.general_member_candidate else None
             }, status=200)
 
     except Exception as e:

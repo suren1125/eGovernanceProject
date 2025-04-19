@@ -169,7 +169,8 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
 
-
+TIME_ZONE='Asia/Kathmandu'
+USE_TZ = True
 
 AUTH_USER_MODEL = 'election.User'
 

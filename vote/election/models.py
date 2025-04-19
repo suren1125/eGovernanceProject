@@ -1,8 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from django.db.models.signals import post_save
-from django.db.models import Count, Max
+from django.utils import timezone
 import uuid
+
 
 # Create your models here.
 class User(AbstractUser):
@@ -59,11 +59,7 @@ class CandidatesForMayor(models.Model):
   votes_received = models.IntegerField(default= 0)
   party_associated = models.CharField(max_length= 100)
   election_promise = models.CharField(max_length = 500)
-  @classmethod
-  def get_highest_voted(cls):
-    return cls.objects.order_by('-votes_received').first()
-
-
+  
   def __str__(self):
     return self.full_name
 
@@ -77,11 +73,25 @@ class CandidatesForDeputymayor(models.Model):
   votes_received = models.IntegerField(default = 0)
   party_associated = models.CharField(max_length= 100)
   election_promise = models.CharField(max_length = 500)
+
   def __str__(self):
     return self.full_name
-  @classmethod
-  def get_highest_voted(cls):
-    return cls.objects.order_by('-votes_received').first()
+
+  
+
+class CandidatesForGeneralMembers(models.Model):
+  candidate_members = models.OneToOneField(User, on_delete=models.CASCADE)
+  candidate_type = models.CharField(max_length = 20, default='general_member')
+  full_name = models.CharField(max_length = 100)
+  image = models.ImageField(default = '1.jpg')
+  area = models.CharField(max_length = 300)
+  votes_received = models.IntegerField(default = 0)
+  party_associated = models.CharField(max_length= 100)
+  election_promise = models.CharField(max_length = 500)
+
+  def __str__(self):
+    return self.full_name
+ 
 
 
 
@@ -89,10 +99,22 @@ class Vote(models.Model):
   voter = models.OneToOneField(User, on_delete = models.CASCADE, related_name ='vote')
   mayor_candidate = models.ForeignKey(CandidatesForMayor, on_delete=models.SET_NULL, null = True, blank = True, related_name = 'votes_for_mayor')
   deputy_mayor_candidate = models.ForeignKey(CandidatesForDeputymayor, on_delete= models.SET_NULL, null = True,blank = True, related_name='votes_for_deputy_mayor')
+  general_member_candidate = models.ForeignKey(CandidatesForGeneralMembers, on_delete= models.SET_NULL, null = True,blank = True, related_name='votes_for_general_member')
 
   def __str__(self):
     return f"Vote by {self.voter.citizenship_number}"
   
+class VotingWindow(models.Model):
+  start_datetime = models.DateTimeField()
+  end_datetime = models.DateTimeField()
+
+  def is_voting_open(self):
+    now = timezone.now()
+    return self.start_datetime <= now <=self.end_datetime
+  
+  def __str__(self):
+    return f"Voting from {self.start_datetime} to {self.end_datetime}"
+
 
 class TopMayorCandidate(CandidatesForMayor):
   class Meta:
@@ -105,4 +127,10 @@ class TopDeputyMayorCandidate(CandidatesForDeputymayor):
     proxy = True
     verbose_name = 'Top Voted Deputy Mayor'
     verbose_name_plural = 'Top Voted Deputy Mayor'
+
+class TopGeneralMemberCandidate(CandidatesForGeneralMembers):
+  class Meta:
+    proxy = True
+    verbose_name = 'Top Voted General Members'
+    verbose_name_plural = 'Top Voted General Members'
     

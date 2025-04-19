@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.db.models import Max
 from .models import *
 # Register your models here.
 
@@ -21,6 +22,14 @@ class DepMayorAdmin(admin.ModelAdmin):
   search_fields = ('full_name',)
 
 
+class GeneralMembersAdmin(admin.ModelAdmin):
+  list_display = ['id','full_name','votes_received','party_associated','election_promise','image']
+  readonly_fields = ['votes_received']
+  search_fields = ('full_name',)
+
+ 
+
+
 @admin.register(TopMayorCandidate)
 class TopMayorCandidateAdmin(admin.ModelAdmin):
   list_display=['full_name', 'votes_received']
@@ -38,9 +47,30 @@ class TopMayorCandidateAdmin(admin.ModelAdmin):
   
   def has_delete_permission(self, request, obj = None):
     return False
+
   
   def has_change_permission(self, request, obj=None):
     return False
+
+
+@admin.register(TopGeneralMemberCandidate)
+class TopGeneralMemberCandidateAdmin(admin.ModelAdmin):
+  list_display=['full_name', 'votes_received']
+  readonly_fields = ['full_name','votes_received','party_associated','election_promise','image']
+
+  def get_queryset(self, request):
+    queryset = super().get_queryset(request)
+    max_votes = queryset.aggregate(Max('votes_received'))['votes_received__max']
+    if max_votes is not None:
+      return queryset.filter(votes_received=max_votes)
+    return queryset.none()
+  
+  def has_add_permission(self, request):
+    return False
+  
+  def has_delete_permission(self, request, obj = None):
+    return False
+
 
   
 @admin.register(TopDeputyMayorCandidate)
@@ -59,8 +89,15 @@ class TopDeputyMayorCandidateAdmin(admin.ModelAdmin):
   def has_delete_permission(self, request, obj = None):
     return False
 
+
+@admin.register(VotingWindow)
+class VotingWindowAdmin(admin.ModelAdmin):
+  list_display  = ('start_datetime','end_datetime')
+
 admin.site.register(User, UserAdmin)
 #admin.site.register(Voter, VotersAdmin)
 admin.site.register(CandidatesForMayor, MayorAdmin)
 admin.site.register(CandidatesForDeputymayor, DepMayorAdmin)
-admin.site.register(Vote)
+admin.site.register(CandidatesForGeneralMembers,GeneralMembersAdmin)
+# admin.site.register(Vote)
+

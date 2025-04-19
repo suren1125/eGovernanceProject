@@ -1,6 +1,6 @@
 # Ignore virtual environments
-env/
-venv/
+# env/
+# venv/
 
 # Ignore compiled Python files
 *.pyc
@@ -10,13 +10,13 @@ __pycache__/
 # *.sqlite3
 
 # Ignore media files (user uploads)
-media/
+#media/
 
 # Ignore static files collected by collectstatic
 staticfiles/
 
 # Ignore environment variable files
-.env
+#.env
 
 # Ignore editor/IDE files
 .vscode/

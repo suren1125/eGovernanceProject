@@ -103,8 +103,16 @@ class CandidatesForDeputymayorSerializer(serializers.ModelSerializer):
       fields = '__all__'
     def __str__(self):
       return self.full_name
+    
+#GeneralMemeber Candidates
+class CandidatesForGeneralMembersSerializer(serializers.ModelSerializer):
+    class Meta:
+      model = CandidatesForGeneralMembers
+      fields = '__all__'
+    def __str__(self):
+      return self.full_name
 
 class VoteSerializer(serializers.Serializer):
-    candidate_type = serializers.ChoiceField(choices=['mayor', 'deputy_mayor'])
+    candidate_type = serializers.ChoiceField(choices=['mayor', 'deputy_mayor','general_member'])
     id = serializers.IntegerField()
 
