@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  scroll-behavior: smooth;
+}
+
 img{
   object-fit: contain;
   width:100%;
@@ -9,15 +13,24 @@ img{
 }
 
 @layer components {
-.margin{
-  @apply mx-[3rem] my-[2rem]
+  .title{
+    @apply text-xl font-bold my-[2rem]
 }
 
-.register  input{
-  @apply  ring-black px-2 py-1 rounded
+.election-list{
+    @apply my-4 border-1 p-4 border-gray-300 rounded-lg
 }
-.register label{
-  @apply font-semibold mb-1
+
+.button{
+    @apply rounded-md bg-[#266ef3] py-1.5 px-3 text-sm text-white
+}
+
+.padding{
+  @apply px-[2rem] lg:px-[3rem] py-[2rem]
+}
+
+.card{
+  @apply bg-white shadow-md padding rounded-lg
 }
 
 }

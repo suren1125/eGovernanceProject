@@ -3,6 +3,7 @@ from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework import serializers
+from .models import VotingWindow
 
 class UserSerializer(serializers.ModelSerializer):
   
@@ -18,7 +19,10 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     token['full_name'] = user.first_name
     token['full_name'] = user.last_name
     token['citizenship_number'] = user.citizenship_number
-    token['voter_id'] = user.voted
+    token['voter_id'] = user.voter_id
+    token['email'] = user.email
+    token['address'] = user.address
+    token['voted'] = user.voted
     return token
 
 
@@ -114,5 +118,23 @@ class CandidatesForGeneralMembersSerializer(serializers.ModelSerializer):
 
 class VoteSerializer(serializers.Serializer):
     candidate_type = serializers.ChoiceField(choices=['mayor', 'deputy_mayor','general_member'])
-    id = serializers.IntegerField()
+    candidate_id = serializers.IntegerField()
 
+
+class VotingWindowSerializer(serializers.ModelSerializer):
+    start_datetime = serializers.SerializerMethodField()
+    end_datetime = serializers.SerializerMethodField()
+    is_voting_open = serializers.SerializerMethodField()
+
+    class Meta:
+        model = VotingWindow
+        fields = ['start_datetime', 'end_datetime', 'is_voting_open']
+
+    def get_start_datetime(self, obj):
+        return obj.start_datetime.strftime("%B %d, %Y %I:%M %p")
+
+    def get_end_datetime(self, obj):
+        return obj.end_datetime.strftime("%B %d, %Y %I:%M %p")
+
+    def get_is_voting_open(self, obj):
+        return obj.is_voting_open()

@@ -44,6 +44,9 @@ def login(request):
      access_token = refresh.access_token
      access_token['full_name'] = f"{user.first_name} {user.last_name}" 
      access_token['citizenship_number'] = user.citizenship_number
+     access_token['voter_id'] = user.voter_id
+     access_token['email'] = user.email
+     access_token['address'] = user.address
      access_token['voted'] = user.voted
      return Response({
             'refresh': str(refresh),
@@ -51,6 +54,8 @@ def login(request):
             'user': {
                 'full_name': f"{user.first_name} {user.last_name}",
                 'citizenship_number': user.citizenship_number,
+                'address':user.address,
+                'email':user.email,
                 'voter_id': user.voter_id,
                 'voted': user.voted
             }
@@ -94,6 +99,20 @@ def get_candidates_deputymayor(request):
 
 @api_view(['GET'])
 @permission_classes([AllowAny])
+def get_voting_window(request):
+    try:
+        voting_window = VotingWindow.objects.first()
+        if not voting_window:
+            return Response({"message": "No voting window found"}, status=404)
+
+        serializer = VotingWindowSerializer(voting_window)
+        return Response(serializer.data)
+    except Exception as e: 
+        return Response({"error": str(e)}, status=500)
+
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
 def get_candidates_generalmembers(request):
     candidates = CandidatesForGeneralMembers.objects.all()
     serializer = CandidatesForGeneralMembersSerializer(candidates, many = True)
@@ -121,7 +140,7 @@ def vote_for_candidate(request):
 
     voter = request.user
     candidate_type = serializer.validated_data['candidate_type']
-    candidate_id = serializer.validated_data['id']
+    candidate_id = serializer.validated_data['candidate_id']
 
     if voter.voted:
         return Response({"error": "You have already voted."}, status=400)

@@ -13,8 +13,8 @@ urlpatterns = [
   path('get_candidates_deputymayor/',views.get_candidates_deputymayor),
   path('get_candidates_generalmembers/',views.get_candidates_generalmembers),
   path('login/',views.login),
-  path('vote/',views.vote_for_candidate,),
-  
+  path('vote/',views.vote_for_candidate),
+  path('get_voting_window/',views.get_voting_window),
 
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

@@ -42,11 +42,12 @@ function Register() {
       const data = await response.json();
 
       if (!response.ok) {
-        console.log("data" + data);
+        console.log(data);
         return
       }
         console.log("successful");
-        console.log("data" + data)
+        console.log(data)
+        navigate('/login')
  
     } catch (err) {
       console.log(err);
@@ -54,94 +55,89 @@ function Register() {
   }
 
   return (
-    <section className="relative mt-[3rem] mx-[5rem] py-[2rem] px-[2rem]">
-      <h1>Register</h1>
-      <form onSubmit={handleSubmit} className="w-1/2 register">
+    <section className="relative bg-[#f7f8fa] pt-[1rem] px-[3rem]">
+      <Link to="/" ><p className="text-xl font-bold mb-[2rem]">eBallot</p></Link>
+      <div className=" card">
+      <h1 className="text-3xl font-bold mb-[2rem]">Register</h1>
+      <section className="grid grid-flow-row sm:grid-cols-2">
+      <form onSubmit={handleSubmit} className="z-10 bg-white  register">
       <div className=" grid grid-cols-2 gap-4">
         <div className="flex flex-col">
-          <label htmlFor="fname">First Name</label>
           <input
             type="text"
             id="fname"
             placeholder="First Name"
-            className="ring-1"
+            className="ring-1 px-2 py-[0.2rem]"
             onChange={(e) => setFname(e.target.value)}
           />
         </div>
 
         <div className="flex flex-col">
-          <label htmlFor="lname">Last Name</label>
           <input
             type="text"
             id="lname"
             placeholder="Last Name"
-            className="ring-1"
+            className="ring-1 px-2 py-[0.2rem]"
             onChange={(e) => setLname(e.target.value)}
           />
         </div>
 
         <div className="flex flex-col">
-          <label htmlFor="citizenNum">Citizenship Number</label>
           <input
             type="text"
             id="citizenNum"
             placeholder="Citizenship Number"
-            className="ring-1"
+            className="ring-1 px-2 py-[0.2rem]"
             onChange={(e) => setCitizenNum(e.target.value)}
           />
         </div>
 
         <div className="flex flex-col">
-          <label htmlFor="address">Address</label>
           <input
             type="text"
             id="address"
             placeholder="Address"
-            className="ring-1"
+            className="ring-1 px-2 py-[0.2rem]"
             onChange={(e) => setAddress(e.target.value)}
           />
         </div>
 
         <div className="flex flex-col">
-          <label htmlFor="phoneNo">Phone Number</label>
           <input
             type="tel"
             id="phoneNo"
             placeholder="Phone Number"
-            className="ring-1"
+            className="ring-1 px-2 py-[0.2rem]"
             onChange={(e) => setPhoneNo(e.target.value)}
           />
         </div>
 
         <div className="flex flex-col">
-          <label htmlFor="email">Email</label>
           <input
             type="email"
             id="email"
             placeholder="Email"
-            className="ring-1"
+            className="ring-1 px-2 py-[0.2rem]"
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
 
         <div className="flex flex-col">
-          <label htmlFor="password">Password</label>
           <input
             type="password"
             id="password"
             placeholder="Password"
-            className="ring-1"
+            className="ring-1 px-2 py-[0.2rem]"
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
 
         <div className="flex flex-col">
-          <label htmlFor="confirmPassword">Confirm Password</label>
           <input
             type="password"
             id="confirmPassword"
             placeholder="Confirm Password"
-            className="ring-1"
+            className="ring-1 px-2 py-[0.2rem]"
             onChange={(e) => setPassword2(e.target.value)}
           />
         </div>
@@ -185,13 +181,15 @@ function Register() {
         </div>
 
         <div className="col-span-2">
-          <button type="submit" className="w-full bg-blue-900 my-3 p-2 rounded-md text-white font-semibold">
+          <button type="submit" className="button w-full mt-[1rem]">
             Register
           </button>
         </div>
       </form>
 
-      <img className="absolute top-0 z-[-1] w-1/2 right-0" src={voting} alt="" />
+      <img className="mt-[2rem] sm:mt-0 sm:absolute right-0 top-0 max-w-[30rem] " src={voting} alt="" />
+      </section>
+      </div>
     </section>
   );
 }
